@@ -20,7 +20,7 @@ using namespace std;
 */
 
 //define OpCodes
-string R_CODE[] = { "0001", "0010", "0011", "0100", "0101", "0110" };
+string R_CODE[] = { "0001", "0010", "0011", "0100", "0101", "0110", "1111" };
 string I_CODE[] = { "0000", "0111", "1000", "1001", "1010", "1011", "1101", "1110" };
 string J_CODE[] = { "1100" };
 
@@ -147,6 +147,7 @@ int main() {
 	WB.memReadData = 0;
 	cout << "entering main \n";
 	int clock = 0;
+	int clockcount = 0;
 
 	Registers[0] = 0x0000; //$zero
 	Registers[1] = 0x0008; //$t0
@@ -210,9 +211,10 @@ int main() {
 			}
 			cout << endl;
 		}
-		else {
+		else {	cout << "\n\tClock Cycle: " << clockcount << endl;
 			writeBack();
 			clock = 1;
+			clockcount++;
 		}
 	}
 	return 0;
@@ -527,18 +529,9 @@ void R_instruct(int OpCode, int rs, int rt){
 		break;
 	case 6: //xor
 		rd = (rs & 0xFFFF) ^ (rt & 0xFFFF);
-		
+		cout << "Executing Xor: Rs(" << rs << ") Xor Rt(" << rt << ") =" << rd << endl;
 		break;
-        case 7: //slt
-                rd = (rs - rt);
-                if(rd > 0){
-                    rd = 1;
-                }else if(rd < 0){
-                    rd = 0;
-                }
-                cout << "Executing SLT: Rs(" << rs << ") SLT Rt(" << rt << ") =" << rd << endl;
-                break;
-        }
+	}
 	//cout << "R_rd: " << rd << endl;
 	executeALUResult = rd;
 
